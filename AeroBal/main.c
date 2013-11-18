@@ -80,6 +80,21 @@ void evaluateBuffer() {
 	else if(strequals("bt:power=off\r\n",buffer)) {
 		//turnPowerOn();
 	}
+	else if(strequals("bt:power=off\r\n",buffer)) {
+		turnPowerOn();
+	}
+	else if(strequals("bt:power=off\r\n",buffer)) {
+		turnPowerOn();
+	}
+	else if(strequals("bt:power=off\r\n",buffer)) {
+		turnPowerOn();
+	}
+	else if(strequals("bt:power=off\r\n",buffer)) {
+		turnPowerOn();
+	}
+	else if(strequals("bt:power=off\r\n",buffer)) {
+		turnPowerOn();
+	}
 }
 
 void
@@ -293,7 +308,6 @@ void sendDrag(int drag) {
 	//char num[numberOfDigits];
 	send("drag",num);
 	free(num);
-
 }
 
 
