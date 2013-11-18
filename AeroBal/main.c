@@ -1,5 +1,5 @@
 //*****************************************************************************
-//
+// Testing Git.
 // uart_echo.c - Example for reading data from and writing data to the UART in
 //               an interrupt driven fashion.
 //
