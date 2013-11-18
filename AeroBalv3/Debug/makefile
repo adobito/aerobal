@@ -10,12 +10,14 @@ ORDERED_OBJS += \
 $(GEN_CMDS__FLAG) \
 "./a.lib/lcd.obj" \
 "./a.lib/gpio.obj" \
-"./tm4c1230h6pm_startup_ccs.obj" \
+"./drivers/rgb.obj" \
+"./utils/uartstdio.obj" \
+"./startup_ccs.obj" \
 "./main.obj" \
-"../tm4c1230h6pm.cmd" \
+"../main_ccs.cmd" \
+-l"C:/ti/TivaWare_C_Series-1.0/examples/boards/ek-tm4c123gxl-boostxl-senshub/pressure_bmp180/ccs/../../../../../driverlib/ccs/Debug/driverlib.lib" \
+-l"C:/ti/TivaWare_C_Series-1.0/examples/boards/ek-tm4c123gxl-boostxl-senshub/pressure_bmp180/ccs/../../../../../sensorlib/ccs/Debug/sensorlib.lib" \
 -l"libc.a" \
--l"/sensorlib/ccs/Debug/sensorlib.lib" \
--l"C:\ti\TivaWare_C_Series-1.1\driverlib\ccs\Debug\driverlib.lib" \
 
 -include ../makefile.init
 
@@ -25,8 +27,12 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
+-include utils/subdir_vars.mk
+-include drivers/subdir_vars.mk
 -include a.lib/subdir_vars.mk
 -include subdir_rules.mk
+-include utils/subdir_rules.mk
+-include drivers/subdir_rules.mk
 -include a.lib/subdir_rules.mk
 -include objects.mk
 
@@ -116,26 +122,31 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: AeroBal.out
+all: Aerobal\ v3.out
 
 # Tool invocations
-AeroBal.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
+Aerobal\ v3.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Linker'
-	"C:/ti/ccsv5/tools/compiler/arm_5.1.1/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me -g --define=PART_TM4C123GH6PM --diag_warning=225 --display_error_number --diag_wrap=off -z -m"AeroBal.map" -i"C:/ti/ccsv5/tools/compiler/arm_5.1.1/lib" -i"C:/ti/ccsv5/tools/compiler/arm_5.1.1/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="AeroBal_linkInfo.xml" --rom_model -o "AeroBal.out" $(ORDERED_OBJS)
+	"C:/ti/ccsv5/tools/compiler/arm_5.1.1/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me -O2 -g --gcc --define=ccs="ccs" --define=PART_TM4C123GH6PM --define=TARGET_IS_BLIZZARD_RB1 --diag_warning=225 --display_error_number --diag_wrap=off --gen_func_subsections=on --ual -z -m"pressure_bmp180_ccs.map" --heap_size=0 --stack_size=1024 -i"C:/ti/ccsv5/tools/compiler/arm_5.1.1/lib" -i"C:/ti/ccsv5/tools/compiler/arm_5.1.1/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="Aerobal v3_linkInfo.xml" --rom_model -o "Aerobal v3.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
+	@$(MAKE) --no-print-directory post-build
 
 # Other Targets
 clean:
-	-$(RM) $(TMS470_EXECUTABLE_OUTPUTS__QUOTED) "AeroBal.out"
-	-$(RM) "main.pp" "tm4c1230h6pm_startup_ccs.pp" "a.lib\gpio.pp" "a.lib\lcd.pp" 
-	-$(RM) "main.obj" "tm4c1230h6pm_startup_ccs.obj" "a.lib\gpio.obj" "a.lib\lcd.obj" 
+	-$(RM) $(TMS470_EXECUTABLE_OUTPUTS__QUOTED) "Aerobal v3.out"
+	-$(RM) "main.pp" "startup_ccs.pp" "utils\uartstdio.pp" "drivers\rgb.pp" "a.lib\gpio.pp" "a.lib\lcd.pp" 
+	-$(RM) "main.obj" "startup_ccs.obj" "utils\uartstdio.obj" "drivers\rgb.obj" "a.lib\gpio.obj" "a.lib\lcd.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
+post-build:
+	-"C:/ti/ccsv5/utils/tiobj2bin/tiobj2bin" "Aerobal v3.out" "Aerobal v3.bin" "C:/ti/ccsv5/tools/compiler/arm_5.1.1/bin/armofd" "C:/ti/ccsv5/tools/compiler/arm_5.1.1/bin/armhex" "C:/ti/ccsv5/utils/tiobj2bin/mkhex4bin"
+	-@echo ' '
+
 .PHONY: all clean dependents
-.SECONDARY:
+.SECONDARY: post-build
 
 -include ../makefile.targets
 

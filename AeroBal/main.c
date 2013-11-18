@@ -21,12 +21,49 @@
 #include "driverlib/uart.h"
 #include "driverlib/pin_map.h"
 //#include "utils/uartstdio.h"
+#include "sensorlib/hw_bmp180.h"
+#include "sensorlib/i2cm_drv.h"
+#include "sensorlib/bmp180.h"
 /***********************************************/
 // Libraries
 #include "a.lib/gpio.h"
 #include "a.lib/lcd.h"
 /***********************************************/
 
+//*****************************************************************************
+//
+// Define BMP180 I2C Address.
+//
+//*****************************************************************************
+#define BMP180_I2C_ADDRESS  0x77
+
+//*****************************************************************************
+//
+// Global array for holding the color values for the RGB.
+//
+//*****************************************************************************
+uint32_t g_pui32Colors[3];
+
+//*****************************************************************************
+//
+// Global instance structure for the I2C master driver.
+//
+//*****************************************************************************
+tI2CMInstance g_sI2CInst;
+
+//*****************************************************************************
+//
+// Global instance structure for the BMP180 sensor driver.
+//
+//*****************************************************************************
+tBMP180 g_sBMP180Inst;
+
+//*****************************************************************************
+//
+// Global new data flag to alert main that BMP180 data is ready.
+//
+//*****************************************************************************
+volatile uint_fast8_t g_vui8DataFlag;
 
 
 char state = 0;
@@ -72,6 +109,49 @@ UARTBTSend(const uint8_t *pui8Buffer, uint32_t ui32Count)
 	}
 }
 
+//*****************************************************************************
+//
+// Called by the NVIC as a result of I2C3 Interrupt. I2C3 is the I2C connection
+// to the BMP180.
+//
+//*****************************************************************************
+void
+BMP180I2CIntHandler(void)
+{
+    //
+    // Pass through to the I2CM interrupt handler provided by sensor library.
+    // This is required to be at application level so that I2CMIntHandler can
+    // receive the instance structure pointer as an argument.
+    //
+    I2CMIntHandler(&g_sI2CInst);
+}
+
+//*****************************************************************************
+//
+// BMP180 Sensor callback function.  Called at the end of BMP180 sensor driver
+// transactions. This is called from I2C interrupt context. Therefore, we just
+// set a flag and let main do the bulk of the computations and display.
+//
+//*****************************************************************************
+void BMP180AppCallback(void* pvCallbackData, uint_fast8_t ui8Status)
+{
+    if(ui8Status == I2CM_STATUS_SUCCESS)
+    {
+        g_vui8DataFlag = 1;
+    }
+}
+
+float fTemperature, fPressure, fAltitude;
+int32_t i32IntegerPart;
+int32_t i32FractionPart;
+
+///////////////////////////////////////////////////////////////////////////////
+void initLCD(){
+
+	lcdInit(GPIO_PORTE,GPIO_PORTC,GPIO_PORTD);
+	lcdClear();
+	lcdCursorHome();
+}
 
 int strequals(char* one, char* two) {
 	int eq = 1;
@@ -343,6 +423,131 @@ void sendDrag(float drag) {
 }
 
 
+void initBMP(){
+
+	 IntMasterEnable();
+    //
+    // The I2C3 peripheral must be enabled before use.
+    //
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_I2C1);
+    SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
+
+    //
+    // Configure the pin muxing for I2C3 functions on port D0 and D1.
+    // This step is not necessary if your part does not support pin muxing.
+    //
+    GPIOPinConfigure(GPIO_PA6_I2C1SCL);
+    GPIOPinConfigure(GPIO_PA7_I2C1SDA);
+
+    //
+    // Select the I2C function for these pins.  This function will also
+    // configure the GPIO pins pins for I2C operation, setting them to
+    // open-drain operation with weak pull-ups.  Consult the data sheet
+    // to see which functions are allocated per pin.
+    //
+    GPIOPinTypeI2CSCL(GPIO_PORTA_BASE, GPIO_PIN_6);
+    GPIOPinTypeI2C(GPIO_PORTA_BASE, GPIO_PIN_7);
+
+    //
+    // Initialize I2C3 peripheral.
+    //
+    I2CMInit(&g_sI2CInst, I2C1_BASE, INT_I2C1, 0xff, 0xff,
+                 ROM_SysCtlClockGet());
+
+    //
+    // Initialize the BMP180
+    //
+    BMP180Init(&g_sBMP180Inst, &g_sI2CInst, BMP180_I2C_ADDRESS,
+                BMP180AppCallback, &g_sBMP180Inst);
+
+
+}
+
+void bmpRead(){
+    //
+    // Read the data from the BMP180 over I2C.  This command starts a
+    // temperature measurement.  Then polls until temperature is ready.
+    // Then automatically starts a pressure measurement and polls for that
+    // to complete. When both measurement are complete and in the local
+    // buffer then the application callback is called from the I2C
+    // interrupt context.  Polling is done on I2C interrupts allowing
+    // processor to continue doing other tasks as needed.
+    //
+    BMP180DataRead(&g_sBMP180Inst, BMP180AppCallback, &g_sBMP180Inst);
+    while(g_vui8DataFlag == 0)
+    {
+        //
+        // Wait for the new data set to be available.
+        //
+    }
+
+    //
+    // Reset the data ready flag.
+    //
+    g_vui8DataFlag = 0;
+
+    //
+    // Get a local copy of the latest temperature data in float format.
+    //
+    BMP180DataTemperatureGetFloat(&g_sBMP180Inst, &fTemperature);
+
+    //
+    // Convert the floats to an integer part and fraction part for easy
+    // print.
+    //
+    i32IntegerPart = (int32_t) fTemperature;
+    i32FractionPart =(int32_t) (fTemperature * 1000.0f);
+    i32FractionPart = i32FractionPart - (i32IntegerPart * 1000);
+    if(i32FractionPart < 0)
+    {
+        i32FractionPart *= -1;
+    }
+
+    //
+    // Print temperature with three digits of decimal precision.
+    //
+    //UARTprintf("Temperature %3d.%03d\t\t", i32IntegerPart, i32FractionPart);
+
+    //
+    // Get a local copy of the latest air pressure data in float format.
+    //
+    BMP180DataPressureGetFloat(&g_sBMP180Inst, &fPressure);
+
+    //
+    // Convert the floats to an integer part and fraction part for easy
+    // print.
+    i32IntegerPart = (int32_t) fPressure;
+    i32FractionPart =(int32_t) (fPressure * 1000.0f);
+    i32FractionPart = i32FractionPart - (i32IntegerPart * 1000);
+    if(i32FractionPart < 0)
+    {
+        i32FractionPart *= -1;
+    }
+
+    //
+    // Print Pressure with three digits of decimal precision.
+    //
+    //UARTprintf("Pressure %3d.%03d\t\t", i32IntegerPart, i32FractionPart);
+
+    //
+    // Calculate the altitude.
+    //
+    fAltitude = 44330.0f * (1.0f - powf(fPressure / 101325.0f,
+                                        1.0f / 5.255f));
+
+    //
+    // Convert the floats to an integer part and fraction part for easy
+    // print.
+    //
+    i32IntegerPart = (int32_t) fAltitude;
+    i32FractionPart =(int32_t) (fAltitude * 1000.0f);
+    i32FractionPart = i32FractionPart - (i32IntegerPart * 1000);
+    if(i32FractionPart < 0)
+    {
+        i32FractionPart *= -1;
+    }
+
+}
 //*****************************************************************************
 //
 // This example demonstrates how to send a string of data to the UART.
@@ -427,17 +632,15 @@ main(void)
 	//
 	// Prompt for text to be entered.
 	//
-	UARTBTSend((uint8_t *)"Enter text: \r\n", 14);
+	//UARTBTSend((uint8_t *)"Enter text: \r\n", 14);
 	//SysCtlDelay(10000000);
 	//UARTBTSend((uint8_t *)"AT\r",3);
 
-	//
-	// Loop forever echoing data through the UART.
-	//
-	char floa[20];
-	ftoa(34.5,floa);
-	puts(floa);
+
+
+
 	while(1)
 	{
+
 	}
 }

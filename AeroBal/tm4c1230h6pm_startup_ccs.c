@@ -55,6 +55,9 @@ extern uint32_t __STACK_TOP;
 //
 //*****************************************************************************
 extern void UARTBTIntHandler(void);
+extern void BMP180I2CIntHandler(void);
+extern void SysTickIntHandler(void);
+extern void RGBBlinkIntHandler(void);
 
 //*****************************************************************************
 //
@@ -120,7 +123,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // SSI1 Rx and Tx
     IntDefaultHandler,                      // Timer 3 subtimer A
     IntDefaultHandler,                      // Timer 3 subtimer B
-    IntDefaultHandler,                      // I2C1 Master and Slave
+    BMP180I2CIntHandler,                      // I2C1 Master and Slave
     IntDefaultHandler,                      // Quadrature Encoder 1
     IntDefaultHandler,                      // CAN0
     IntDefaultHandler,                      // CAN1
