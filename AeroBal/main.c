@@ -1,20 +1,32 @@
+/************************************************/
+// System Includes - ARM
 #include <stdint.h>
 #include <stdbool.h>
-#include <string.h>
-#include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include "utils/uartstdio.h"
-#include "inc/hw_ints.h"
+#include <stdlib.h>
 #include "inc/hw_memmap.h"
-#include "driverlib/debug.h"
+#include "driverlib/interrupt.h"
+#include "driverlib/rom.h"
+#include "driverlib/timer.h"
+#include "driverlib/sysctl.h"
+//#include "inc/tm4c123gh6pm.h"
+//#include "inc/hw_nvic.h"
+//#include "inc/hw_types.h"
+//#include "inc/hw_ints.h"
+//#include "driverlib/debug.h"
 #include "driverlib/fpu.h"
 #include "driverlib/gpio.h"
-#include "driverlib/interrupt.h"
-#include "driverlib/pin_map.h"
-#include "driverlib/rom.h"
-#include "driverlib/sysctl.h"
+//#include "driverlib/systick.h"
 #include "driverlib/uart.h"
+#include "driverlib/pin_map.h"
+//#include "utils/uartstdio.h"
+/***********************************************/
+// Libraries
+#include "a.lib/gpio.h"
+#include "a.lib/lcd.h"
+/***********************************************/
+
 
 
 char state = 0;
@@ -56,7 +68,7 @@ UARTBTSend(const uint8_t *pui8Buffer, uint32_t ui32Count)
 		//
 		// Write the next character to the UART.
 		//
-		UARTCharPut(UART1_BASE, *pui8Buffer++);
+		UARTCharPut(UART2_BASE, *pui8Buffer++);
 	}
 }
 
@@ -73,14 +85,25 @@ int strequals(char* one, char* two) {
 	eq = one[i] == two[i];
 	return eq;
 }
+void turnPowerOn() {
+	puts("powering on");
+	UARTBTSend("On\r\n", 4);
+	gpioSetData(GPIO_PORTD,0x01,0x01);
+}
+
+void turnPowerOff() {
+	puts("powering off");
+	UARTBTSend("Off\r\n", 5);
+	gpioSetData(GPIO_PORTD,0x01,0x00);
+}
 void evaluateBuffer() {
-	if(strequals("bt:power=on\r\n",buffer)) {
-		//turnPowerOn();
+	if(strequals("bt:power=on",buffer)) {
+		turnPowerOn();
 	}
-	else if(strequals("bt:power=off\r\n",buffer)) {
-		//turnPowerOn();
+	else if(strequals("bt:power=off",buffer)) {
+		turnPowerOff();
 	}
-	else if(strequals("bt:power=off\r\n",buffer)) {
+	/*else if(strequals("bt:power=off\r\n",buffer)) {
 		turnPowerOn();
 	}
 	else if(strequals("bt:power=off\r\n",buffer)) {
@@ -94,7 +117,7 @@ void evaluateBuffer() {
 	}
 	else if(strequals("bt:power=off\r\n",buffer)) {
 		turnPowerOn();
-	}
+	}*/
 }
 
 void
@@ -121,7 +144,7 @@ UARTIntHandler(void)
 		//
 		// Read the next character from the UART and write it back to the UART.
 		//
-		UARTCharPutNonBlocking(UART1_BASE,
+		UARTCharPutNonBlocking(UART2_BASE,
 				UARTCharGetNonBlocking(UART0_BASE));
 
 		//
@@ -155,24 +178,27 @@ UARTBTIntHandler(void)
 	//
 	// Clear the asserted interrupts.
 	//
-	UARTIntClear(UART1_BASE, ui32Status);
+	UARTIntClear(UART2_BASE, ui32Status);
 
 	//
 	// Loop while there are characters in the receive FIFO.
 	//
 	char reset = 0;
-	while(UARTCharsAvail(UART1_BASE))
+	while(UARTCharsAvail(UART2_BASE))
 	{
 		//
 		// Read the next character from the UART and write it back to the UART.
 		//
-		char ch = UARTCharGetNonBlocking(UART1_BASE);
+		char ch = UARTCharGet(UART2_BASE);
 
 
 		switch(state) {
 		case 0:
 			if(ch == 'b') {
 				state = 1;
+				count = 0;
+				//buffer[0] = ch;
+				//count = 1;
 				break;
 			}
 			reset = 1;
@@ -192,18 +218,22 @@ UARTBTIntHandler(void)
 			reset = 1;
 			break;
 		case 3:
-			if(ch == '\r') {
+			if(ch == '\r' || ch == '\n') {
 				reset = 1;
 				buffer[count] = '\0';
 				evaluateBuffer();
 				break;
 			}
 			break;
+		default:
+			reset = 1;
+			break;
 		}
 
 		if(reset) {
 			state = 0;
 			if(ch == 'b') {
+				buffer[0] = ch;
 				state = 1;
 			}
 			count = 0;
@@ -211,7 +241,7 @@ UARTBTIntHandler(void)
 		buffer[count] = ch;
 		count++;
 		reset = 0;
-		UARTCharPutNonBlocking(UART0_BASE,
+		UARTCharPut(UART0_BASE,
 				ch);
 
 
@@ -288,7 +318,11 @@ int lengthOfString(char* str) {
 	return i;
 }
 
-
+int strlen(char *string){
+	int i = 0 ;
+	for(i = 0; string[i]!='\0';i++);
+	return i;
+}
 void send(char* name, char* value) {
 	int size = strlen(name) + strlen(value) + 7;
 	char* out = malloc(size*sizeof(char));
@@ -347,8 +381,8 @@ main(void)
 	//
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_UART0);
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
-	SysCtlPeripheralEnable(SYSCTL_PERIPH_UART1);
-	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOB);
+	SysCtlPeripheralEnable(SYSCTL_PERIPH_UART2);
+	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
 
 	//
 	// Enable processor interrupts.
@@ -360,10 +394,15 @@ main(void)
 	//
 	GPIOPinConfigure(GPIO_PA0_U0RX);
 	GPIOPinConfigure(GPIO_PA1_U0TX);
-	GPIOPinConfigure(GPIO_PB0_U1RX);
-	GPIOPinConfigure(GPIO_PB1_U1TX);
+	GPIOPinConfigure(GPIO_PD6_U2RX);
+	GPIOPinConfigure(GPIO_PD7_U2TX);
 	GPIOPinTypeUART(GPIO_PORTA_BASE, GPIO_PIN_0 | GPIO_PIN_1);
-	GPIOPinTypeUART(GPIO_PORTB_BASE, GPIO_PIN_0 | GPIO_PIN_1);
+	GPIOPinTypeUART(GPIO_PORTD_BASE, GPIO_PIN_6 | GPIO_PIN_7);
+
+	gpioSetMasterEnable(GPIO_PORTD);
+	gpioSetDirection(GPIO_PORTD,0x01,0x01);
+	gpioSetDigitalEnable(GPIO_PORTD,0x01,0x01);
+
 
 	//
 	// Configure the UART for 115,200, 8-N-1 operation.
@@ -372,7 +411,7 @@ main(void)
 			(UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
 					UART_CONFIG_PAR_NONE));
 
-	UARTConfigSetExpClk(UART1_BASE, SysCtlClockGet(), 9600,
+	UARTConfigSetExpClk(UART2_BASE, SysCtlClockGet(), 9600,
 			(UART_CONFIG_WLEN_8 | UART_CONFIG_STOP_ONE |
 					UART_CONFIG_PAR_NONE));
 
@@ -382,13 +421,13 @@ main(void)
 	IntEnable(INT_UART0);
 	UARTIntEnable(UART0_BASE, UART_INT_RX | UART_INT_RT);
 
-	IntEnable(INT_UART1);
-	UARTIntEnable(UART1_BASE, UART_INT_RX | UART_INT_RT);
+	IntEnable(INT_UART2);
+	UARTIntEnable(UART2_BASE, UART_INT_RX | UART_INT_RT);
 
 	//
 	// Prompt for text to be entered.
 	//
-	UARTSend((uint8_t *)"Enter text: \r\n", 14);
+	UARTBTSend((uint8_t *)"Enter text: \r\n", 14);
 	//SysCtlDelay(10000000);
 	//UARTBTSend((uint8_t *)"AT\r",3);
 

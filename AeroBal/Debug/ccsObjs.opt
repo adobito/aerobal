@@ -1,1 +1,1 @@
-"./a.lib/lcd.obj" "./a.lib/gpio.obj" "./tm4c1230h6pm_startup_ccs.obj" "./main.obj" "../tm4c1230h6pm.cmd" -l"libc.a" -l"C:\ti\TivaWare_C_Series-1.1\driverlib\ccs\Debug\driverlib.lib" 
+"./a.lib/lcd.obj" "./a.lib/gpio.obj" "./tm4c1230h6pm_startup_ccs.obj" "./main.obj" "../tm4c1230h6pm.cmd" -l"C:/ti/TivaWare_C_Series-1.0/examples/boards/ek-tm4c123gxl/project0/ccs/../../../../../driverlib/ccs/Debug/driverlib.lib" -l"libc.a" 
