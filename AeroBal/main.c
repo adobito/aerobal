@@ -107,14 +107,25 @@ UARTBTSend(const uint8_t *pui8Buffer, uint32_t ui32Count)
 }
 
 
-void evaluateBuffer() {
+int strequals(char* one, char* two) {
+	int eq = 1;
 	int i = 0;
-	//char subBuffer[20];
-	for(i = 0; i < count; i++) {
-		//if()
+	for(i = 0; one[i] != '\0' || two[i] != '\0'; i++) {
+		if(one[i] != two[i]) {
+			eq = 0;
+			break;
+		}
 	}
-	UARTBTSend(buffer,count);
-	UARTBTSend("\nlol\n",5);
+	eq = one[i] == two[i];
+	return eq;
+}
+void evaluateBuffer() {
+	if(strequals("bt:power=on\r\n",buffer)) {
+		turnPowerOn();
+	}
+	else if(strequals("bt:power=off\r\n",buffer)) {
+		turnPowerOn();
+	}
 }
 //*****************************************************************************
 //
@@ -218,6 +229,7 @@ UARTBTIntHandler(void)
 		case 3:
 			if(ch == '\r') {
 				reset = 1;
+				buffer[count] = '\0';
 				evaluateBuffer();
 				break;
 			}
