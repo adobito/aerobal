@@ -301,13 +301,11 @@ void send(char* name, char* value) {
 	free(out);
 	SysCtlDelay(10000);
 }
-void sendDrag(int drag) {
-	int numberOfDigits = GetNumberOfDigits(drag);
-	char* num = malloc((10+numberOfDigits)*sizeof(char));
-	itoa(drag,num);
+void sendDrag(float drag) {
+	char name[20];
+	ftoa(drag,name);
 	//char num[numberOfDigits];
-	send("drag",num);
-	free(num);
+	send("drag",name);
 }
 
 
