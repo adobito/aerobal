@@ -1,0 +1,962 @@
+******************************************************************************
+                  TI ARM Linker PC v5.1.1                      
+******************************************************************************
+>> Linked Wed Nov 27 17:09:13 2013
+
+OUTPUT FILE NAME:   <AB_9.1_Integration-v2.out>
+ENTRY POINT SYMBOL: "_c_int00"  address: 00002c65
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+  FLASH                 00000000   00040000  00003bf0  0003c410  R  X
+  SRAM                  20000000   00008000  000017c4  0000683c  RW X
+
+
+SEGMENT ALLOCATION MAP
+
+run origin  load origin   length   init length attrs members
+----------  ----------- ---------- ----------- ----- -------
+00000000    00000000    00003bf0   00003bf0    r-x
+  00000000    00000000    0000026c   0000026c    r-- .intvecs
+  0000026c    0000026c    0000372c   0000372c    r-x .text
+  00003998    00003998    00000190   00000190    r-- .const
+  00003b28    00003b28    000000c8   000000c8    r-- .cinit
+20000000    20000000    000017d0   00000000    rw-
+  20000000    20000000    00001171   00000000    rw- .bss
+  20001174    20001174    00000400   00000000    rw- .stack
+  20001578    20001578    0000024b   00000000    rw- .data
+  200017c8    200017c8    00000008   00000000    rw- .sysmem
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.intvecs   0    00000000    0000026c     
+                  00000000    0000026c     startup_ccs.obj (.intvecs)
+
+.init_array 
+*          0    00000000    00000000     UNINITIALIZED
+
+.text      0    0000026c    0000372c     
+                  0000026c    000002ec     rtsv7M4_T_le_v4SPD16_eabi.lib : xlog.obj (.text)
+                  00000558    000001b6                                   : fd_add_t2.obj (.text)
+                  0000070e    00000002     startup_ccs.obj (.text:FaultISR)
+                  00000710    0000018c     ABSM.obj (.text:ABSMMain_7_PerformCalculations)
+                  0000089c    00000136     rtsv7M4_T_le_v4SPD16_eabi.lib : fd_div_t2.obj (.text)
+                  000009d2    00000002     startup_ccs.obj (.text:IntDefaultHandler)
+                  000009d4    00000104     driverlib.lib : sysctl.obj (.text:SysCtlClockSet)
+                  00000ad8    000000fc     rtsv7M4_T_le_v4SPD16_eabi.lib : fd_mul_t2.obj (.text)
+                  00000bd4    000000f4     loadCell.obj (.text:loadCellgetWeight)
+                  00000cc8    000000ea     sensorlib.lib : i2cm_drv.obj (.text:I2CMIntHandler)
+                  00000db2    00000002     startup_ccs.obj (.text:NmiSR)
+                  00000db4    000000e4     lcd.obj (.text:lcdWriteNumberWithBounds)
+                  00000e98    000000d0     AB-0.9.1.obj (.text:ABStateMachineRun)
+                  00000f68    000000c8     lcd.obj (.text:lcdInit)
+                  00001030    000000c4     lcd.obj (.text:lcdWriteDigits)
+                  000010f4    000000c4     rtsv7M4_T_le_v4SPD16_eabi.lib : xdnorm.obj (.text)
+                  000011b8    000000c0     ABSM.obj (.text:ABSMCalibrate_7_StoreInitialValues_O)
+                  00001278    000000b8     ABSM.obj (.text:ABSMCalibrate_2_StoreInitialValues_E)
+                  00001330    000000b8     ABSM.obj (.text:ABSMCalibrate_5_StoreFinalValues_E)
+                  000013e8    000000b8     ABSM.obj (.text:ABSMMain_8_OutputResults)
+                  000014a0    000000b8     driverlib.lib : gpio.obj (.text:GPIOPadConfigSet)
+                  00001558    000000b8     bt.obj (.text:UARTBTIntHandler)
+                  00001610    000000b4     ABSM.obj (.text:ABSMMain_6_GetExperimentData)
+                  000016c4    000000b4     driverlib.lib : sysctl.obj (.text:SysCtlClockGet)
+                  00001778    000000b4     dht11.obj (.text:dht11response)
+                  0000182c    000000ac     bt.obj (.text:evaluateBuffer)
+                  000018d8    000000a8     anemometer.obj (.text:anemometerInterruptGPIO)
+                  00001980    000000a4     dht11.obj (.text:dht11responseStatus)
+                  00001a24    0000009c     rtsv7M4_T_le_v4SPD16_eabi.lib : memcpy_t2.obj (.text)
+                  00001ac0    00000098     sensorlib.lib : i2cm_drv.obj (.text:I2CMStateIdle)
+                  00001b58    00000098     anemometer.obj (.text:anemometerSetup)
+                  00001bf0    00000094     ABSM.obj (.text:ABSMCalibrate_1_Init)
+                  00001c84    00000094     rtsv7M4_T_le_v4SPD16_eabi.lib : auto_init.obj (.text)
+                  00001d18    0000008c     ABSM.obj (.text:ABSMMainPrintWelcomeMessage)
+                  00001da4    0000008c     dht11.obj (.text:dht11request)
+                  00001e30    00000084     ABSM.obj (.text:ABSMCalibrate_3_PromptForClosedTunnel)
+                  00001eb4    00000084     ABSM.obj (.text:ABSMCalibrate_4_CalibrateWindSpeed)
+                  00001f38    00000084     ABUI.obj (.text:ABUIButtonInterrupt)
+                  00001fbc    00000080     ABSM.obj (.text:ABSMMain_4_ConfirmExperiment)
+                  0000203c    00000080     ABSM.obj (.text:ABSMMain_5_VerifyWindSpeed)
+                  000020bc    00000080     bt.obj (.text:BluetoothMainInit)
+                  0000213c    00000080     lcd.obj (.text:lcdWriteNumber)
+                  000021bc    0000007e     rtsv7M4_T_le_v4SPD16_eabi.lib : fd_cmp_t2.obj (.text:__aeabi_cdcmple)
+                  0000223a    0000007e                                   : fd_cmp_t2.obj (.text:__aeabi_cdrcmple)
+                  000022b8    0000007c     ABSM.obj (.text:ABSMCalibrate_6_PromptForObject)
+                  00002334    00000074     ABSM.obj (.text:ABServoSet)
+                  000023a8    00000074     loadCell.obj (.text:averageValues)
+                  0000241c    00000074     loadCell.obj (.text:loadCellgetValues)
+                  00002490    00000074     bt.obj (.text:send)
+                  00002504    0000006c     gpio.obj (.text:gpioSetMasterEnable)
+                  00002570    0000006c     servo.obj (.text:servosetPositionPWM)
+                  000025dc    00000068     anemometer.obj (.text:anemometerInterruptTimer)
+                  00002644    00000068     bt.obj (.text:ftoa)
+                  000026ac    00000064     dht11.obj (.text:dht11init)
+                  00002710    00000064     rtsv7M4_T_le_v4SPD16_eabi.lib : xdunscal.obj (.text)
+                  00002774    00000063     ABUI.obj (.text:ABUIPrintStateInvalid)
+                  000027d7    00000001     --HOLE-- [fill = 0]
+                  000027d8    00000060     ABMain.obj (.text:ABLoadCellRefresh)
+                  00002838    00000060     driverlib.lib : interrupt.obj (.text:IntEnable)
+                  00002898    0000005e     sensorlib.lib : i2cm_drv.obj (.text:I2CMStateWritePause)
+                  000028f6    0000005e     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_rle.obj (.text)
+                  00002954    0000005c     loadCell.obj (.text:initializeADC)
+                  000029b0    00000050     ABUI.obj (.text:ABUIButtonsSetNextState)
+                  00002a00    00000050     loadCell.obj (.text:loadCellgetData)
+                  00002a50    00000050     servo.obj (.text:servoSetupPWM)
+                  00002aa0    0000004e     ABSM.obj (.text:ABSMPrintScreen)
+                  00002aee    0000004e     sensorlib.lib : i2cm_drv.obj (.text:I2CMStateWriteFinal)
+                  00002b3c    0000004c     ABUI.obj (.text:ABUIButtonSetup)
+                  00002b88    0000004a     rtsv7M4_T_le_v4SPD16_eabi.lib : fd_tos_t2.obj (.text)
+                  00002bd2    00000002     --HOLE-- [fill = 0]
+                  00002bd4    00000048     driverlib.lib : gpio.obj (.text:GPIOPinConfigure)
+                  00002c1c    00000048     sensorlib.lib : i2cm_drv.obj (.text:I2CMStateReadNext)
+                  00002c64    00000048     rtsv7M4_T_le_v4SPD16_eabi.lib : boot.obj (.text)
+                  00002cac    00000048                                   : fd_toi_t2.obj (.text)
+                  00002cf4    00000046     sensorlib.lib : i2cm_drv.obj (.text:I2CMStateWriteNext)
+                  00002d3a    00000002     --HOLE-- [fill = 0]
+                  00002d3c    00000044     rtsv7M4_T_le_v4SPD16_eabi.lib : cpy_tbl.obj (.text)
+                  00002d80    00000044                                   : exit.obj (.text)
+                  00002dc4    00000040     sensorlib.lib : i2cm_drv.obj (.text:I2CMStateCallback)
+                  00002e04    00000040     driverlib.lib : uart.obj (.text:UARTConfigSetExpClk)
+                  00002e44    00000040     gpio.obj (.text:gpioSetInterruptEnable)
+                  00002e84    00000040     rtsv7M4_T_le_v4SPD16_eabi.lib : signal.obj (.text)
+                  00002ec4    0000003e     sensorlib.lib : i2cm_drv.obj (.text:I2CMStateReadFinal)
+                  00002f02    0000003e                   : i2cm_drv.obj (.text:I2CMStateReadPause)
+                  00002f40    0000003c     dht11.obj (.text:dht11getData)
+                  00002f7c    0000003a     ABSM.obj (.text:ABServoChange)
+                  00002fb6    00000038     rtsv7M4_T_le_v4SPD16_eabi.lib : fs_tod_t2.obj (.text)
+                  00002fee    00000036     bt.obj (.text:itoa)
+                  00003024    00000034     driverlib.lib : sysctl.obj (.text:SysCtlPeripheralEnable)
+                  00003058    00000034     ABMain.obj (.text:UARTIntHandler)
+                  0000308c    00000034     rtsv7M4_T_le_v4SPD16_eabi.lib : feraiseexcept.obj (.text)
+                  000030c0    00000030     lcd.obj (.text:lcdWriteToPort)
+                  000030f0    00000030     rtsv7M4_T_le_v4SPD16_eabi.lib : xferaise.obj (.text)
+                  00003120    00000030     bt.obj (.text:unlockPD7)
+                  00003150    00000030     bt.obj (.text:unlockPF0)
+                  00003180    0000002e     driverlib.lib : adc.obj (.text:ADCIntStatus)
+                  000031ae    0000002e     lcd.obj (.text:lcdWriteLine)
+                  000031dc    0000002e     rtsv7M4_T_le_v4SPD16_eabi.lib : i_tofd_t2.obj (.text)
+                  0000320a    0000002e                                   : raise.obj (.text)
+                  00003238    0000002e     bt.obj (.text:sendMeasurements)
+                  00003266    0000002c     driverlib.lib : adc.obj (.text:ADCSequenceConfigure)
+                  00003292    0000002a                   : gpio.obj (.text:GPIODirModeSet)
+                  000032bc    0000002a     sensorlib.lib : i2cm_drv.obj (.text:I2CMStateReadFirst)
+                  000032e6    0000002a     bt.obj (.text:concat)
+                  00003310    00000028     AB-0.9.1.obj (.text:ABTestStateMachine)
+                  00003338    00000028     driverlib.lib : timer.obj (.text:TimerConfigure)
+                  00003360    00000028     anemometer.obj (.text:anemometerGetVelocityInMIH)
+                  00003388    00000028     lcd.obj (.text:lcdWriteCommit)
+                  000033b0    00000028     lcd.obj (.text:lcdWriteData)
+                  000033d8    00000026     bt.obj (.text:sendState)
+                  000033fe    00000002     --HOLE-- [fill = 0]
+                  00003400    00000024     dht11.obj (.text:initTimeControlModule)
+                  00003424    00000024     bt.obj (.text:turnPowerOff)
+                  00003448    00000020     ABUI.obj (.text:ABUIButtonEnable)
+                  00003468    00000020     bt.obj (.text:GetNumberOfDigits)
+                  00003488    00000020     sensorlib.lib : i2cm_drv.obj (.text:I2CMStateReadOne)
+                  000034a8    00000020     dht11.obj (.text:dht11dataReading)
+                  000034c8    00000020     rtsv7M4_T_le_v4SPD16_eabi.lib : u_tofd_t2.obj (.text)
+                  000034e8    00000020     bt.obj (.text:sendDragMeasurement)
+                  00003508    00000020     bt.obj (.text:sendLiftMeasurement)
+                  00003528    00000020     bt.obj (.text:sendTiltMeasurement)
+                  00003548    00000020     bt.obj (.text:turnPowerOn)
+                  00003568    0000001e     driverlib.lib : adc.obj (.text:ADCSequenceDataGet)
+                  00003586    0000001e     bt.obj (.text:strequals)
+                  000035a4    0000001c     bt.obj (.text:UARTBTSend)
+                  000035c0    0000001c     driverlib.lib : uart.obj (.text:UARTDisable)
+                  000035dc    0000001c     dht11.obj (.text:dht11count1uS)
+                  000035f8    0000001c     dht11.obj (.text:initTimer1Module)
+                  00003614    0000001c     lcd.obj (.text:lcdWriteCommand)
+                  00003630    0000001a     lcd.obj (.text:lcdWriteString)
+                  0000364a    0000001a     rtsv7M4_T_le_v4SPD16_eabi.lib : log10.obj (.text)
+                  00003664    00000018     sensorlib.lib : i2cm_drv.obj (.text:I2CMStateReadWait)
+                  0000367c    00000018     anemometer.obj (.text:anemometerEnable)
+                  00003694    00000018     rtsv7M4_T_le_v4SPD16_eabi.lib : args_main.obj (.text)
+                  000036ac    00000016     driverlib.lib : adc.obj (.text:ADCProcessorTrigger)
+                  000036c2    00000016                   : i2c.obj (.text:I2CMasterErr)
+                  000036d8    00000014                   : timer.obj (.text:TimerDisable)
+                  000036ec    00000014                   : uart.obj (.text:UARTEnable)
+                  00003700    00000014     lcd.obj (.text:lcdMathPower)
+                  00003714    00000014     rtsv7M4_T_le_v4SPD16_eabi.lib : _lock.obj (.text)
+                  00003728    00000014                                   : strlen.obj (.text)
+                  0000373c    00000012     driverlib.lib : gpio.obj (.text:GPIOPinTypeADC)
+                  0000374e    00000012                   : gpio.obj (.text:GPIOPinTypeGPIOOutput)
+                  00003760    00000012                   : gpio.obj (.text:GPIOPinTypeTimer)
+                  00003772    00000012                   : gpio.obj (.text:GPIOPinTypeUART)
+                  00003784    00000012                   : timer.obj (.text:TimerLoadSet)
+                  00003796    00000012                   : timer.obj (.text:TimerMatchSet)
+                  000037a8    00000012     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_zero_init.obj (.text:decompress:ZI)
+                  000037ba    00000012     gpio.obj (.text:gpioSetDigitalEnable)
+                  000037cc    00000012     gpio.obj (.text:gpioSetInterruptClear)
+                  000037de    00000012     gpio.obj (.text:gpioSetInterruptEvent)
+                  000037f0    00000010     ABSM.obj (.text:ABSMMain_2_EnterCalibrateSubMachine)
+                  00003800    00000010     ABUI.obj (.text:ABUIButtonDisable)
+                  00003810    00000010     gpio.obj (.text:gpioSetData)
+                  00003820    00000010     gpio.obj (.text:gpioSetDirection)
+                  00003830    00000010     gpio.obj (.text:gpioSetInterruptBothEdges)
+                  00003840    00000010     gpio.obj (.text:gpioSetInterruptMaskDisable)
+                  00003850    0000000e     driverlib.lib : adc.obj (.text:ADCSequenceEnable)
+                  0000385e    0000000e                   : timer.obj (.text:TimerEnable)
+                  0000386c    0000000e                   : uart.obj (.text:UARTCharGetNonBlocking)
+                  0000387a    0000000e                   : uart.obj (.text:UARTCharPutNonBlocking)
+                  00003888    0000000e     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_none.obj (.text:decompress:none)
+                  00003896    0000000e     gpio.obj (.text:gpioGetInterruptRawStatus)
+                  000038a4    0000000c     AB-0.9.1.obj (.text:ABStateMachineChangeState)
+                  000038b0    0000000c     ABMain.obj (.text:BMP180I2CIntHandler)
+                  000038bc    0000000c     driverlib.lib : cpu.obj (.text:CPUcpsie)
+                  000038c8    0000000c                   : uart.obj (.text:UARTCharsAvail)
+                  000038d4    0000000c     anemometer.obj (.text:anemometerDisable)
+                  000038e0    0000000c     AB-0.9.1.obj (.text:initiateTunnelSetup)
+                  000038ec    0000000c     AB-0.9.1.obj (.text:main)
+                  000038f8    0000000a     driverlib.lib : adc.obj (.text:ADCIntClear)
+                  00003902    0000000a                   : interrupt.obj (.text:IntMasterEnable)
+                  0000390c    0000000a                   : uart.obj (.text:UARTCharPut)
+                  00003916    0000000a                   : uart.obj (.text:UARTIntStatus)
+                  00003920    00000008     ABMain.obj (.text:ABStateInvalid)
+                  00003928    00000008     driverlib.lib : i2c.obj (.text:I2CMasterIntClear)
+                  00003930    00000008                   : i2c.obj (.text:I2CMasterSlaveAddrSet)
+                  00003938    00000008                   : timer.obj (.text:TimerIntEnable)
+                  00003940    00000008                   : uart.obj (.text:UARTIntEnable)
+                  00003948    00000006                   : gpio.obj (.text:GPIOPinWrite)
+                  0000394e    00000006     startup_ccs.obj (.text:ResetISR)
+                  00003954    00000006     driverlib.lib : sysctl.obj (.text:SysCtlDelay)
+                  0000395a    00000006     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24)
+                  00003960    00000006     lcd.obj (.text:lcdClear)
+                  00003966    00000006     lcd.obj (.text:lcdCursorHome)
+                  0000396c    00000006     lcd.obj (.text:lcdCursorHomeDown)
+                  00003972    00000006     lcd.obj (.text:lcdWriteSingleDigit)
+                  00003978    00000004     ABMain.obj (.text:ABStandardSysDelay)
+                  0000397c    00000004     driverlib.lib : i2c.obj (.text:I2CMasterControl)
+                  00003980    00000004                   : i2c.obj (.text:I2CMasterDataGet)
+                  00003984    00000004                   : i2c.obj (.text:I2CMasterDataPut)
+                  00003988    00000004                   : timer.obj (.text:TimerIntClear)
+                  0000398c    00000004                   : uart.obj (.text:UARTIntClear)
+                  00003990    00000004     gpio.obj (.text:gpioHelperInterruptMasterEnable)
+                  00003994    00000004     lcd.obj (.text:lcdWriteLetter)
+
+.const     0    00003998    00000190     
+                  00003998    00000078     driverlib.lib : gpio.obj (.const:g_pui32GPIOBaseAddrs)
+                  00003a10    00000070                   : interrupt.obj (.const)
+                  00003a80    0000006c                   : sysctl.obj (.const:g_pui32Xtals)
+                  00003aec    00000004     --HOLE-- [fill = 0]
+                  00003af0    00000038     rtsv7M4_T_le_v4SPD16_eabi.lib : xlog.obj (.const:p)
+
+.cinit     0    00003b28    000000c8     
+                  00003b28    000000a1     (.cinit..data.load) [load image, compression = rle]
+                  00003bc9    00000003     --HOLE-- [fill = 0]
+                  00003bcc    0000000c     (__TI_handler_table)
+                  00003bd8    00000008     (.cinit..bss.load) [load image, compression = zero_init]
+                  00003be0    00000010     (__TI_cinit_table)
+
+.bss       0    20000000    00001171     UNINITIALIZED
+                  20000000    00000fa0     loadCell.obj (.bss:values)
+                  20000fa0    00000124     ABMain.obj (.bss:g_sI2CInst)
+                  200010c4    0000001c     (.common:pui32ADC0Value)
+                  200010e0    00000014     (.common:buffer)
+                  200010f4    00000004     (.common:_ABLoadBase_NoWindDragBack)
+                  200010f8    00000004     (.common:_ABLoadBase_NoWindDragFront)
+                  200010fc    00000004     (.common:_ABLoadBase_NoWindLiftDown)
+                  20001100    00000004     (.common:_ABLoadBase_NoWindLiftUp)
+                  20001104    00000004     (.common:_ABLoadBase_WindDragBack)
+                  20001108    00000004     (.common:_ABLoadBase_WindDragFront)
+                  2000110c    00000004     (.common:_ABLoadBase_WindLiftDown)
+                  20001110    00000004     (.common:_ABLoadBase_WindLiftUp)
+                  20001114    00000004     (.common:_ABLoadCellDragBack)
+                  20001118    00000004     (.common:_ABLoadCellDragFront)
+                  2000111c    00000004     (.common:_ABLoadCellLiftDown)
+                  20001120    00000004     (.common:_ABLoadCellLiftUp)
+                  20001124    00000004     (.common:_ABLoadCombined_NoWindDragBack)
+                  20001128    00000004     (.common:_ABLoadCombined_NoWindDragFront)
+                  2000112c    00000004     (.common:_ABLoadCombined_NoWindLiftDown)
+                  20001130    00000004     (.common:_ABLoadCombined_NoWindLiftUp)
+                  20001134    00000004     (.common:_ABLoadCombined_WindDragBack)
+                  20001138    00000004     (.common:_ABLoadCombined_WindDragFront)
+                  2000113c    00000004     (.common:_ABLoadCombined_WindLiftDown)
+                  20001140    00000004     (.common:_ABLoadCombined_WindLiftUp)
+                  20001144    00000004     (.common:_ABWindVaneAngle)
+                  20001148    00000004     (.common:_anemometerIntCount)
+                  2000114c    00000004     (.common:_anemometerMilliseconds)
+                  20001150    00000004     (.common:_anemometerVelocityInKMH)
+                  20001154    00000004     (.common:_anemometerVelocityInMS)
+                  20001158    00000004     (.common:_lcdInited)
+                  2000115c    00000004     (.common:_lcdPortControl)
+                  20001160    00000004     (.common:_lcdPortDataLower)
+                  20001164    00000004     (.common:_lcdPortDataUpper)
+                  20001168    00000004     (.common:_wind_car_drag)
+                  2000116c    00000004     (.common:_wind_car_lift)
+                  20001170    00000001     (.common:count)
+
+.stack     0    20001174    00000400     UNINITIALIZED
+                  20001174    00000400     --HOLE--
+
+.data      0    20001578    0000024b     UNINITIALIZED
+                  20001578    000000b0     rtsv7M4_T_le_v4SPD16_eabi.lib : signal.obj (.data:sigtable)
+                  20001628    00000080                                   : xvalues.obj (.data)
+                  200016a8    00000068                                   : xfvalues.obj (.data)
+                  20001710    00000044     dht11.obj (.data)
+                  20001754    00000034     bt.obj (.data)
+                  20001788    00000008     anemometer.obj (.data)
+                  20001790    00000008     loadCell.obj (.data)
+                  20001798    00000008     rtsv7M4_T_le_v4SPD16_eabi.lib : _lock.obj (.data)
+                  200017a0    00000008                                   : exit.obj (.data)
+                  200017a8    00000008                                   : feraiseexcept.obj (.data)
+                  200017b0    00000006     ABUI.obj (.data)
+                  200017b6    00000002     --HOLE--
+                  200017b8    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : errno.obj (.data)
+                  200017bc    00000004                                   : stkdepth_vars.obj (.data)
+                  200017c0    00000003     AB-0.9.1.obj (.data)
+
+.sysmem    0    200017c8    00000008     UNINITIALIZED
+                  200017c8    00000008     rtsv7M4_T_le_v4SPD16_eabi.lib : memory.obj (.sysmem)
+
+
+LINKER GENERATED COPY TABLES
+
+__TI_cinit_table @ 00003be0 records: 2, size/record: 8, table size: 16
+	.data: load addr=00003b28, load size=000000a1 bytes, run addr=20001578, run size=0000024b bytes, compression=rle
+	.bss: load addr=00003bd8, load size=00000008 bytes, run addr=20000000, run size=00001171 bytes, compression=zero_init
+
+
+LINKER GENERATED HANDLER TABLE
+
+__TI_handler_table @ 00003bcc records: 3, size/record: 4, table size: 12
+	index: 0, handler: __TI_decompress_rle24
+	index: 1, handler: __TI_decompress_none
+	index: 2, handler: __TI_zero_init
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+address    name
+--------   ----
+000027d9   ABLoadCellRefresh
+00001bf1   ABSMCalibrate_1_Init
+00001279   ABSMCalibrate_2_StoreInitialValues_E
+00001e31   ABSMCalibrate_3_PromptForClosedTunnel
+00001eb5   ABSMCalibrate_4_CalibrateWindSpeed
+00001331   ABSMCalibrate_5_StoreFinalValues_E
+000022b9   ABSMCalibrate_6_PromptForObject
+000011b9   ABSMCalibrate_7_StoreInitialValues_O
+00001d19   ABSMMainPrintWelcomeMessage
+000037f1   ABSMMain_2_EnterCalibrateSubMachine
+00001fbd   ABSMMain_4_ConfirmExperiment
+0000203d   ABSMMain_5_VerifyWindSpeed
+00001611   ABSMMain_6_GetExperimentData
+00000711   ABSMMain_7_PerformCalculations
+000013e9   ABSMMain_8_OutputResults
+00002aa1   ABSMPrintScreen
+00002f7d   ABServoChange
+00002335   ABServoSet
+00003979   ABStandardSysDelay
+00003921   ABStateInvalid
+000038a5   ABStateMachineChangeState
+00000e99   ABStateMachineRun
+200017c0   ABStateMachineState
+00003311   ABTestStateMachine
+00003801   ABUIButtonDisable
+00003449   ABUIButtonEnable
+00001f39   ABUIButtonInterrupt
+00002b3d   ABUIButtonSetup
+000029b1   ABUIButtonsSetNextState
+00002775   ABUIPrintStateInvalid
+000038f9   ADCIntClear
+00003181   ADCIntStatus
+000036ad   ADCProcessorTrigger
+00003267   ADCSequenceConfigure
+00003569   ADCSequenceDataGet
+00003851   ADCSequenceEnable
+000038b1   BMP180I2CIntHandler
+000020bd   BluetoothMainInit
+00002d81   C$$EXIT
+000038bd   CPUcpsie
+00003293   GPIODirModeSet
+000014a1   GPIOPadConfigSet
+00002bd5   GPIOPinConfigure
+0000373d   GPIOPinTypeADC
+0000374f   GPIOPinTypeGPIOOutput
+00003761   GPIOPinTypeTimer
+00003773   GPIOPinTypeUART
+00003949   GPIOPinWrite
+00003469   GetNumberOfDigits
+00000cc9   I2CMIntHandler
+0000397d   I2CMasterControl
+00003981   I2CMasterDataGet
+00003985   I2CMasterDataPut
+000036c3   I2CMasterErr
+00003929   I2CMasterIntClear
+00003931   I2CMasterSlaveAddrSet
+00002839   IntEnable
+00003903   IntMasterEnable
+20001790   MAX_VAL
+0000394f   ResetISR
+UNDEFED    SHT$$INIT_ARRAY$$Base
+UNDEFED    SHT$$INIT_ARRAY$$Limit
+000016c5   SysCtlClockGet
+000009d5   SysCtlClockSet
+00003955   SysCtlDelay
+00003025   SysCtlPeripheralEnable
+00003339   TimerConfigure
+000036d9   TimerDisable
+0000385f   TimerEnable
+00003989   TimerIntClear
+00003939   TimerIntEnable
+00003785   TimerLoadSet
+00003797   TimerMatchSet
+00001559   UARTBTIntHandler
+000035a5   UARTBTSend
+0000386d   UARTCharGetNonBlocking
+0000390d   UARTCharPut
+0000387b   UARTCharPutNonBlocking
+000038c9   UARTCharsAvail
+00002e05   UARTConfigSetExpClk
+000035c1   UARTDisable
+000036ed   UARTEnable
+0000398d   UARTIntClear
+00003941   UARTIntEnable
+00003059   UARTIntHandler
+00003917   UARTIntStatus
+200010f4   _ABLoadBase_NoWindDragBack
+200010f8   _ABLoadBase_NoWindDragFront
+200010fc   _ABLoadBase_NoWindLiftDown
+20001100   _ABLoadBase_NoWindLiftUp
+20001104   _ABLoadBase_WindDragBack
+20001108   _ABLoadBase_WindDragFront
+2000110c   _ABLoadBase_WindLiftDown
+20001110   _ABLoadBase_WindLiftUp
+20001114   _ABLoadCellDragBack
+20001118   _ABLoadCellDragFront
+2000111c   _ABLoadCellLiftDown
+20001120   _ABLoadCellLiftUp
+20001124   _ABLoadCombined_NoWindDragBack
+20001128   _ABLoadCombined_NoWindDragFront
+2000112c   _ABLoadCombined_NoWindLiftDown
+20001130   _ABLoadCombined_NoWindLiftUp
+20001134   _ABLoadCombined_WindDragBack
+20001138   _ABLoadCombined_WindDragFront
+2000113c   _ABLoadCombined_WindLiftDown
+20001140   _ABLoadCombined_WindLiftUp
+200017b0   _ABUIButtonB0_UP_State
+200017b1   _ABUIButtonB3_DOWN_State
+200017b2   _ABUIButtonB4_ENTER_State
+200017b3   _ABUIButtonB5_CANCEL_State
+200017b4   _ABUIButtonB6_MENU_State
+200017b5   _ABUIButtonB7_OPTION_State
+20001144   _ABWindVaneAngle
+20001628   _Denorm
+000010f5   _Dnorm
+00002711   _Dunscale
+20001638   _Eps
+200017b8   _Errno
+200016a8   _FDenorm
+200016b8   _FEps
+200016c8   _FInf
+200016d8   _FNan
+200016f8   _FRteps
+200016e8   _FSnan
+20001708   _FXbig
+2000170c   _FZero
+200017a8   _Fenv
+000030f1   _Feraise
+20001648   _Hugeval
+20001658   _Inf
+0000026d   _Log
+20001668   _Nan
+20001688   _Rteps
+20001678   _Snan
+200017ac   _Tls_setup__Fenv
+20001698   _Xbig
+200016a0   _Zero
+20001574   __STACK_END
+00000400   __STACK_SIZE
+20001574   __STACK_TOP
+00000008   __SYSMEM_SIZE
+00003be0   __TI_CINIT_Base
+00003bf0   __TI_CINIT_Limit
+00003bcc   __TI_Handler_Table_Base
+00003bd8   __TI_Handler_Table_Limit
+00000001   __TI_args_main
+00001c85   __TI_auto_init
+200017a0   __TI_cleanup_ptr
+00003889   __TI_decompress_none
+0000395b   __TI_decompress_rle24
+200017a4   __TI_dtors_ptr
+00000000   __TI_static_base__
+000037a9   __TI_zero_init
+000021bd   __aeabi_cdcmpeq
+000021bd   __aeabi_cdcmple
+0000223b   __aeabi_cdrcmple
+00002b89   __aeabi_d2f
+00002cad   __aeabi_d2iz
+00000563   __aeabi_dadd
+0000089d   __aeabi_ddiv
+00000ad9   __aeabi_dmul
+00000559   __aeabi_dsub
+00002fb7   __aeabi_f2d
+000031dd   __aeabi_i2d
+00001a25   __aeabi_memcpy
+00001a25   __aeabi_memcpy4
+00001a25   __aeabi_memcpy8
+000034c9   __aeabi_ui2d
+ffffffff   __binit__
+ffffffff   __c_args__
+20001174   __stack
+2000178c   _anemometerCount
+20001788   _anemometerEnable
+20001148   _anemometerIntCount
+2000114c   _anemometerMilliseconds
+20001150   _anemometerVelocityInKMH
+20001154   _anemometerVelocityInMS
+00003695   _args_main
+00002c65   _c_int00
+20001158   _lcdInited
+2000115c   _lcdPortControl
+20001160   _lcdPortDataLower
+20001164   _lcdPortDataUpper
+20001798   _lock
+00003723   _nop
+0000371b   _register_lock
+00003715   _register_unlock
+200017c8   _sys_memory
+2000179c   _unlock
+20001168   _wind_car_drag
+2000116c   _wind_car_lift
+00002d85   abort
+000038d5   anemometerDisable
+0000367d   anemometerEnable
+00003361   anemometerGetVelocityInMIH
+000018d9   anemometerInterruptGPIO
+000025dd   anemometerInterruptTimer
+00001b59   anemometerSetup
+000023a9   averageValues
+ffffffff   binit
+20001720   bitEntryTime
+20001724   bitExitTime
+20001728   bitTimingStatus
+200017c1   bt_setupState
+200017c2   bt_state
+200010e0   buffer
+000032e7   concat
+00002d3d   copy_in
+20001170   count
+2000171c   count1uS
+20001794   counter
+20001718   dataBitReadStatus
+20001748   decimalHumidity
+20001740   decimalTemp
+000035dd   dht11count1uS
+000034a9   dht11dataReading
+00002f41   dht11getData
+000026ad   dht11init
+00001da5   dht11request
+00001779   dht11response
+00001981   dht11responseStatus
+0000182d   evaluateBuffer
+00002d8d   exit
+0000308d   feraiseexcept
+00002645   ftoa
+00000000   g_pfnVectors
+20000fa0   g_sI2CInst
+00003897   gpioGetInterruptRawStatus
+00003991   gpioHelperInterruptMasterEnable
+00003811   gpioSetData
+000037bb   gpioSetDigitalEnable
+00003821   gpioSetDirection
+00003831   gpioSetInterruptBothEdges
+000037cd   gpioSetInterruptClear
+00002e45   gpioSetInterruptEnable
+000037df   gpioSetInterruptEvent
+00003841   gpioSetInterruptMaskDisable
+00002505   gpioSetMasterEnable
+20001744   humidity
+2000176c   initDownDynamicEmpty
+2000175c   initDownStaticEmpty
+2000177c   initDownStaticLoad
+20001770   initLeftDynamicEmpty
+20001760   initLeftStaticEmpty
+20001780   initLeftStaticLoad
+20001774   initRightDynamicEmpty
+20001764   initRightStaticEmpty
+20001784   initRightStaticLoad
+00003401   initTimeControlModule
+000035f9   initTimer1Module
+20001768   initUpDynamicEmpty
+20001758   initUpStaticEmpty
+20001778   initUpStaticLoad
+00002955   initializeADC
+000038e1   initiateTunnelSetup
+00002fef   itoa
+00003961   lcdClear
+00003967   lcdCursorHome
+0000396d   lcdCursorHomeDown
+00000f69   lcdInit
+00003701   lcdMathPower
+00003615   lcdWriteCommand
+00003389   lcdWriteCommit
+000033b1   lcdWriteData
+00001031   lcdWriteDigits
+00003995   lcdWriteLetter
+000031af   lcdWriteLine
+0000213d   lcdWriteNumber
+00000db5   lcdWriteNumberWithBounds
+00003973   lcdWriteSingleDigit
+00003631   lcdWriteString
+000030c1   lcdWriteToPort
+00002955   loadCellSetup
+00002a01   loadCellgetData
+0000241d   loadCellgetValues
+00000bd5   loadCellgetWeight
+0000364b   log10
+000038ed   main
+200017bc   main_func_sp
+00001a25   memcpy
+2000172c   process
+200010c4   pui32ADC0Value
+0000320b   raise
+20001710   responseStatusOk0
+20001714   responseStatusOk1
+00002491   send
+000034e9   sendDragMeasurement
+00003509   sendLiftMeasurement
+00003239   sendMeasurements
+000033d9   sendState
+00003529   sendTiltMeasurement
+00002a51   servoSetupPWM
+00002571   servosetPositionPWM
+20001755   setupState
+00002e85   signal
+20001754   state
+20001734   status0
+20001738   status1
+20001730   step
+00003587   strequals
+00003729   strlen
+20001750   sum
+2000174c   sumDataCheck
+2000173c   temp
+00003425   turnPowerOff
+00003549   turnPowerOn
+00003121   unlockPD7
+00003151   unlockPF0
+20000000   values
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+address    name
+--------   ----
+00000000   __TI_static_base__
+00000000   g_pfnVectors
+00000001   __TI_args_main
+00000008   __SYSMEM_SIZE
+0000026d   _Log
+00000400   __STACK_SIZE
+00000559   __aeabi_dsub
+00000563   __aeabi_dadd
+00000711   ABSMMain_7_PerformCalculations
+0000089d   __aeabi_ddiv
+000009d5   SysCtlClockSet
+00000ad9   __aeabi_dmul
+00000bd5   loadCellgetWeight
+00000cc9   I2CMIntHandler
+00000db5   lcdWriteNumberWithBounds
+00000e99   ABStateMachineRun
+00000f69   lcdInit
+00001031   lcdWriteDigits
+000010f5   _Dnorm
+000011b9   ABSMCalibrate_7_StoreInitialValues_O
+00001279   ABSMCalibrate_2_StoreInitialValues_E
+00001331   ABSMCalibrate_5_StoreFinalValues_E
+000013e9   ABSMMain_8_OutputResults
+000014a1   GPIOPadConfigSet
+00001559   UARTBTIntHandler
+00001611   ABSMMain_6_GetExperimentData
+000016c5   SysCtlClockGet
+00001779   dht11response
+0000182d   evaluateBuffer
+000018d9   anemometerInterruptGPIO
+00001981   dht11responseStatus
+00001a25   __aeabi_memcpy
+00001a25   __aeabi_memcpy4
+00001a25   __aeabi_memcpy8
+00001a25   memcpy
+00001b59   anemometerSetup
+00001bf1   ABSMCalibrate_1_Init
+00001c85   __TI_auto_init
+00001d19   ABSMMainPrintWelcomeMessage
+00001da5   dht11request
+00001e31   ABSMCalibrate_3_PromptForClosedTunnel
+00001eb5   ABSMCalibrate_4_CalibrateWindSpeed
+00001f39   ABUIButtonInterrupt
+00001fbd   ABSMMain_4_ConfirmExperiment
+0000203d   ABSMMain_5_VerifyWindSpeed
+000020bd   BluetoothMainInit
+0000213d   lcdWriteNumber
+000021bd   __aeabi_cdcmpeq
+000021bd   __aeabi_cdcmple
+0000223b   __aeabi_cdrcmple
+000022b9   ABSMCalibrate_6_PromptForObject
+00002335   ABServoSet
+000023a9   averageValues
+0000241d   loadCellgetValues
+00002491   send
+00002505   gpioSetMasterEnable
+00002571   servosetPositionPWM
+000025dd   anemometerInterruptTimer
+00002645   ftoa
+000026ad   dht11init
+00002711   _Dunscale
+00002775   ABUIPrintStateInvalid
+000027d9   ABLoadCellRefresh
+00002839   IntEnable
+00002955   initializeADC
+00002955   loadCellSetup
+000029b1   ABUIButtonsSetNextState
+00002a01   loadCellgetData
+00002a51   servoSetupPWM
+00002aa1   ABSMPrintScreen
+00002b3d   ABUIButtonSetup
+00002b89   __aeabi_d2f
+00002bd5   GPIOPinConfigure
+00002c65   _c_int00
+00002cad   __aeabi_d2iz
+00002d3d   copy_in
+00002d81   C$$EXIT
+00002d85   abort
+00002d8d   exit
+00002e05   UARTConfigSetExpClk
+00002e45   gpioSetInterruptEnable
+00002e85   signal
+00002f41   dht11getData
+00002f7d   ABServoChange
+00002fb7   __aeabi_f2d
+00002fef   itoa
+00003025   SysCtlPeripheralEnable
+00003059   UARTIntHandler
+0000308d   feraiseexcept
+000030c1   lcdWriteToPort
+000030f1   _Feraise
+00003121   unlockPD7
+00003151   unlockPF0
+00003181   ADCIntStatus
+000031af   lcdWriteLine
+000031dd   __aeabi_i2d
+0000320b   raise
+00003239   sendMeasurements
+00003267   ADCSequenceConfigure
+00003293   GPIODirModeSet
+000032e7   concat
+00003311   ABTestStateMachine
+00003339   TimerConfigure
+00003361   anemometerGetVelocityInMIH
+00003389   lcdWriteCommit
+000033b1   lcdWriteData
+000033d9   sendState
+00003401   initTimeControlModule
+00003425   turnPowerOff
+00003449   ABUIButtonEnable
+00003469   GetNumberOfDigits
+000034a9   dht11dataReading
+000034c9   __aeabi_ui2d
+000034e9   sendDragMeasurement
+00003509   sendLiftMeasurement
+00003529   sendTiltMeasurement
+00003549   turnPowerOn
+00003569   ADCSequenceDataGet
+00003587   strequals
+000035a5   UARTBTSend
+000035c1   UARTDisable
+000035dd   dht11count1uS
+000035f9   initTimer1Module
+00003615   lcdWriteCommand
+00003631   lcdWriteString
+0000364b   log10
+0000367d   anemometerEnable
+00003695   _args_main
+000036ad   ADCProcessorTrigger
+000036c3   I2CMasterErr
+000036d9   TimerDisable
+000036ed   UARTEnable
+00003701   lcdMathPower
+00003715   _register_unlock
+0000371b   _register_lock
+00003723   _nop
+00003729   strlen
+0000373d   GPIOPinTypeADC
+0000374f   GPIOPinTypeGPIOOutput
+00003761   GPIOPinTypeTimer
+00003773   GPIOPinTypeUART
+00003785   TimerLoadSet
+00003797   TimerMatchSet
+000037a9   __TI_zero_init
+000037bb   gpioSetDigitalEnable
+000037cd   gpioSetInterruptClear
+000037df   gpioSetInterruptEvent
+000037f1   ABSMMain_2_EnterCalibrateSubMachine
+00003801   ABUIButtonDisable
+00003811   gpioSetData
+00003821   gpioSetDirection
+00003831   gpioSetInterruptBothEdges
+00003841   gpioSetInterruptMaskDisable
+00003851   ADCSequenceEnable
+0000385f   TimerEnable
+0000386d   UARTCharGetNonBlocking
+0000387b   UARTCharPutNonBlocking
+00003889   __TI_decompress_none
+00003897   gpioGetInterruptRawStatus
+000038a5   ABStateMachineChangeState
+000038b1   BMP180I2CIntHandler
+000038bd   CPUcpsie
+000038c9   UARTCharsAvail
+000038d5   anemometerDisable
+000038e1   initiateTunnelSetup
+000038ed   main
+000038f9   ADCIntClear
+00003903   IntMasterEnable
+0000390d   UARTCharPut
+00003917   UARTIntStatus
+00003921   ABStateInvalid
+00003929   I2CMasterIntClear
+00003931   I2CMasterSlaveAddrSet
+00003939   TimerIntEnable
+00003941   UARTIntEnable
+00003949   GPIOPinWrite
+0000394f   ResetISR
+00003955   SysCtlDelay
+0000395b   __TI_decompress_rle24
+00003961   lcdClear
+00003967   lcdCursorHome
+0000396d   lcdCursorHomeDown
+00003973   lcdWriteSingleDigit
+00003979   ABStandardSysDelay
+0000397d   I2CMasterControl
+00003981   I2CMasterDataGet
+00003985   I2CMasterDataPut
+00003989   TimerIntClear
+0000398d   UARTIntClear
+00003991   gpioHelperInterruptMasterEnable
+00003995   lcdWriteLetter
+00003bcc   __TI_Handler_Table_Base
+00003bd8   __TI_Handler_Table_Limit
+00003be0   __TI_CINIT_Base
+00003bf0   __TI_CINIT_Limit
+20000000   values
+20000fa0   g_sI2CInst
+200010c4   pui32ADC0Value
+200010e0   buffer
+200010f4   _ABLoadBase_NoWindDragBack
+200010f8   _ABLoadBase_NoWindDragFront
+200010fc   _ABLoadBase_NoWindLiftDown
+20001100   _ABLoadBase_NoWindLiftUp
+20001104   _ABLoadBase_WindDragBack
+20001108   _ABLoadBase_WindDragFront
+2000110c   _ABLoadBase_WindLiftDown
+20001110   _ABLoadBase_WindLiftUp
+20001114   _ABLoadCellDragBack
+20001118   _ABLoadCellDragFront
+2000111c   _ABLoadCellLiftDown
+20001120   _ABLoadCellLiftUp
+20001124   _ABLoadCombined_NoWindDragBack
+20001128   _ABLoadCombined_NoWindDragFront
+2000112c   _ABLoadCombined_NoWindLiftDown
+20001130   _ABLoadCombined_NoWindLiftUp
+20001134   _ABLoadCombined_WindDragBack
+20001138   _ABLoadCombined_WindDragFront
+2000113c   _ABLoadCombined_WindLiftDown
+20001140   _ABLoadCombined_WindLiftUp
+20001144   _ABWindVaneAngle
+20001148   _anemometerIntCount
+2000114c   _anemometerMilliseconds
+20001150   _anemometerVelocityInKMH
+20001154   _anemometerVelocityInMS
+20001158   _lcdInited
+2000115c   _lcdPortControl
+20001160   _lcdPortDataLower
+20001164   _lcdPortDataUpper
+20001168   _wind_car_drag
+2000116c   _wind_car_lift
+20001170   count
+20001174   __stack
+20001574   __STACK_END
+20001574   __STACK_TOP
+20001628   _Denorm
+20001638   _Eps
+20001648   _Hugeval
+20001658   _Inf
+20001668   _Nan
+20001678   _Snan
+20001688   _Rteps
+20001698   _Xbig
+200016a0   _Zero
+200016a8   _FDenorm
+200016b8   _FEps
+200016c8   _FInf
+200016d8   _FNan
+200016e8   _FSnan
+200016f8   _FRteps
+20001708   _FXbig
+2000170c   _FZero
+20001710   responseStatusOk0
+20001714   responseStatusOk1
+20001718   dataBitReadStatus
+2000171c   count1uS
+20001720   bitEntryTime
+20001724   bitExitTime
+20001728   bitTimingStatus
+2000172c   process
+20001730   step
+20001734   status0
+20001738   status1
+2000173c   temp
+20001740   decimalTemp
+20001744   humidity
+20001748   decimalHumidity
+2000174c   sumDataCheck
+20001750   sum
+20001754   state
+20001755   setupState
+20001758   initUpStaticEmpty
+2000175c   initDownStaticEmpty
+20001760   initLeftStaticEmpty
+20001764   initRightStaticEmpty
+20001768   initUpDynamicEmpty
+2000176c   initDownDynamicEmpty
+20001770   initLeftDynamicEmpty
+20001774   initRightDynamicEmpty
+20001778   initUpStaticLoad
+2000177c   initDownStaticLoad
+20001780   initLeftStaticLoad
+20001784   initRightStaticLoad
+20001788   _anemometerEnable
+2000178c   _anemometerCount
+20001790   MAX_VAL
+20001794   counter
+20001798   _lock
+2000179c   _unlock
+200017a0   __TI_cleanup_ptr
+200017a4   __TI_dtors_ptr
+200017a8   _Fenv
+200017ac   _Tls_setup__Fenv
+200017b0   _ABUIButtonB0_UP_State
+200017b1   _ABUIButtonB3_DOWN_State
+200017b2   _ABUIButtonB4_ENTER_State
+200017b3   _ABUIButtonB5_CANCEL_State
+200017b4   _ABUIButtonB6_MENU_State
+200017b5   _ABUIButtonB7_OPTION_State
+200017b8   _Errno
+200017bc   main_func_sp
+200017c0   ABStateMachineState
+200017c1   bt_setupState
+200017c2   bt_state
+200017c8   _sys_memory
+ffffffff   __binit__
+ffffffff   __c_args__
+ffffffff   binit
+UNDEFED    SHT$$INIT_ARRAY$$Base
+UNDEFED    SHT$$INIT_ARRAY$$Limit
+
+[309 symbols]
